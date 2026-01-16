@@ -15,9 +15,7 @@
 #include "heu/library/algorithms/ashe/encryptor.h"
 
 namespace heu::lib::algorithms::ashe {
-Ciphertext Encryptor::EncryptZero() const {
-  return Encrypt(BigInt(0));
-}
+Ciphertext Encryptor::EncryptZero() const { return Encrypt(BigInt(0)); }
 
 Ciphertext Encryptor::Encrypt(const Plaintext &m) const {
   return EncryptImpl(m, nullptr);
@@ -27,7 +25,8 @@ void Encryptor::Encrypt(const Plaintext &m, Ciphertext *out) const {
   *out = Encrypt(m);
 }
 
-std::pair<Ciphertext, std::string> Encryptor::EncryptWithAudit(const Plaintext &m) const {
+std::pair<Ciphertext, std::string> Encryptor::EncryptWithAudit(
+    const Plaintext &m) const {
   std::string audit_out;
   Ciphertext ct_out = EncryptImpl<true>(m, &audit_out);
   audit_out.append(
@@ -36,7 +35,8 @@ std::pair<Ciphertext, std::string> Encryptor::EncryptWithAudit(const Plaintext &
 }
 
 template <bool audit>
-Ciphertext Encryptor::EncryptImpl(const Plaintext &m, std::string *audit_str) const {
+Ciphertext Encryptor::EncryptImpl(const Plaintext &m,
+                                  std::string *audit_str) const {
   YACL_ENFORCE(m <= pp_.MessageSpace().second && m >= pp_.MessageSpace().first,
                "Plaintext {} is too large, cannot encrypt.", m);
   BigInt r, r1;
@@ -51,4 +51,4 @@ Ciphertext Encryptor::EncryptImpl(const Plaintext &m, std::string *audit_str) co
   }
   return Ciphertext(m1);
 }
-} // namespace heu::lib::algorithms::ashe
+}  // namespace heu::lib::algorithms::ashe

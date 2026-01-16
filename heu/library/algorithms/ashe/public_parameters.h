@@ -21,7 +21,7 @@
 
 namespace heu::lib::algorithms::ashe {
 class PublicParameters : public HeObject<PublicParameters> {
-private:
+ private:
   BigInt plaintextBound;
 
   static std::string ToHexString(const std::vector<BigInt> &vec) {
@@ -37,7 +37,7 @@ private:
     return oss.str();
   }
 
-public:
+ public:
   int64_t k_r1 = 4384;
   int64_t k_p = 1536;
   int64_t k_q = 1008;
@@ -45,7 +45,6 @@ public:
   int64_t k_m = 64;
   std::vector<BigInt> randomZeros;
   BigInt M[2];
-
 
   PublicParameters() = default;
 
@@ -66,9 +65,7 @@ public:
 
   [[nodiscard]] std::string ToString() const override;
 
-  [[nodiscard]] const BigInt &PlaintextBound() const & {
-    return M[1];
-  }
+  [[nodiscard]] const BigInt &PlaintextBound() const & { return M[1]; }
 
   void Init();
 
@@ -78,4 +75,4 @@ public:
 
   MSGPACK_DEFINE(k_r1, k_p, k_q, k_r2, k_m, M, randomZeros);
 };
-} // namespace heu::lib::algorithms::ashe
+}  // namespace heu::lib::algorithms::ashe

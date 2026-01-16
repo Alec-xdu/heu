@@ -20,15 +20,14 @@
 #include "heu/library/algorithms/util/he_object.h"
 
 namespace heu::lib::algorithms::ashe {
-
 using Plaintext = BigInt;
 
 class Ciphertext : public HeObject<Ciphertext> {
- public:
-
+public:
   Ciphertext() = default;
 
-  explicit Ciphertext(BigInt n) : n_(std::move(n)) {}
+  explicit Ciphertext(BigInt n) : n_(std::move(n)) {
+  }
 
   [[nodiscard]] std::string ToString() const override {
     return fmt::format("CT: {}", n_);
@@ -46,5 +45,4 @@ class Ciphertext : public HeObject<Ciphertext> {
 
   BigInt n_;
 };
-
-}  // namespace heu::lib::algorithms::ashe
+} // namespace heu::lib::algorithms::ashe

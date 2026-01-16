@@ -21,9 +21,8 @@
 
 namespace heu::lib::algorithms::ashe {
 class Evaluator {
-public:
-  explicit Evaluator(PublicParameters pp) : pp_(std::move(pp)) {
-  }
+ public:
+  explicit Evaluator(PublicParameters pp) : pp_(std::move(pp)) {}
 
   void Randomize(Ciphertext *ct) const;
 
@@ -55,11 +54,11 @@ public:
   [[nodiscard]] Ciphertext Negate(const Ciphertext &a) const;
   void NegateInplace(Ciphertext *a) const;
 
-private:
+ private:
   PublicParameters pp_;
   BigInt ONE = BigInt(1);
   BigInt ZERO = BigInt(0);
   BigInt MAX = BigInt(UINT64_MAX);
   BigInt PlainSpace = BigInt(2).Pow(16);
 };
-} // namespace heu::lib::algorithms::ashe
+}  // namespace heu::lib::algorithms::ashe

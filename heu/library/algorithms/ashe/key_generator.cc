@@ -18,7 +18,8 @@
 
 namespace heu::lib::algorithms::ashe {
 void KeyGenerator::Generate(int key_size, SecretKey *sk, PublicParameters *pk) {
-  int64_t k_r1, k_p, k_q, k_r2, k_m;;
+  int64_t k_r1, k_p, k_q, k_r2, k_m;
+  ;
   if (key_size == 2048) {
     k_r1 = 4384;
     k_p = 1536;
@@ -38,8 +39,7 @@ void KeyGenerator::Generate(int key_size, SecretKey *sk, PublicParameters *pk) {
   *sk = SecretKey(p, q);
 
   InitZeros(k_r1, k_p, k_q, k_r2, k_m, *sk, &zeros);
-  *pk =
-      PublicParameters(k_r1, k_p, k_q, k_r2, k_m, zeros);
+  *pk = PublicParameters(k_r1, k_p, k_q, k_r2, k_m, zeros);
 }
 
 void KeyGenerator::Generate(SecretKey *sk, PublicParameters *pk) {
@@ -55,4 +55,4 @@ void KeyGenerator::InitZeros(int64_t k_r1, int64_t k_p, int64_t k_q,
     zeros->emplace_back(et.Encrypt(BigInt(0)).n_);
   }
 }
-} // namespace heu::lib::algorithms::ashe
+}  // namespace heu::lib::algorithms::ashe

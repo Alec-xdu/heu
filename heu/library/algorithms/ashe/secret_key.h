@@ -20,7 +20,7 @@
 
 namespace heu::lib::algorithms::ashe {
 class SecretKey : public HeObject<SecretKey> {
-public:
+ public:
   BigInt p_, q_;
 
   SecretKey(BigInt p, BigInt q) {
@@ -39,11 +39,10 @@ public:
   }
 
   [[nodiscard]] std::string ToString() const override {
-    return fmt::format("ashe SK, p={}[{}bits], q={}[{}bits]",
-                       p_.ToHexString(), p_.BitCount(),
-                       q_.ToHexString(), q_.BitCount());
+    return fmt::format("ashe SK, p={}[{}bits], q={}[{}bits]", p_.ToHexString(),
+                       p_.BitCount(), q_.ToHexString(), q_.BitCount());
   }
 
   MSGPACK_DEFINE(p_, q_);
 };
-} // namespace heu::lib::algorithms::ashe
+}  // namespace heu::lib::algorithms::ashe

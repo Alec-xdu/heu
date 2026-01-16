@@ -13,9 +13,8 @@ PublicParameters::PublicParameters(int64_t k_r1, int64_t k_p, int64_t k_q,
 
 PublicParameters::PublicParameters(int64_t k_r1, int64_t k_p, int64_t k_q,
                                    int64_t k_r2, int64_t k_m,
-                                   const std::vector<BigInt> &zeros) :
-  PublicParameters(
-      k_r1, k_p, k_q, k_r2, k_m) {
+                                   const std::vector<BigInt> &zeros)
+    : PublicParameters(k_r1, k_p, k_q, k_r2, k_m) {
   this->randomZeros = zeros;
 }
 
@@ -32,4 +31,4 @@ void PublicParameters::Init() {
   this->M[1] = BigInt(2).Pow(k_m - 1) - BigInt(1);
   this->M[0] = -this->M[1];
 }
-} // namespace heu::lib::algorithms::ashe
+}  // namespace heu::lib::algorithms::ashe

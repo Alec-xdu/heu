@@ -23,4 +23,4 @@ Plaintext Decryptor::Decrypt(const Ciphertext &ct) const {
   BigInt tmp = ct.n_.AddMod(ZERO, p).AddMod(ZERO, q).AddMod(ZERO, MAX);
   return tmp <= half ? tmp : tmp - MAX;
 }
-} // namespace heu::lib::algorithms::ashe
+}  // namespace heu::lib::algorithms::ashe

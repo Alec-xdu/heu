@@ -109,7 +109,5 @@ Ciphertext Evaluator::Negate(const Ciphertext &a) const {
   return Mul(a, neg);
 }
 
-void Evaluator::NegateInplace(Ciphertext *a) const {
-  *a = Negate(*a);
-}
-} // namespace heu::lib::algorithms::ashe
+void Evaluator::NegateInplace(Ciphertext *a) const { *a = Negate(*a); }
+}  // namespace heu::lib::algorithms::ashe

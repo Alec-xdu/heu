@@ -14,19 +14,18 @@
 
 #pragma once
 
+#include "heu/library/algorithms/ashe/encryptor.h"
 #include "heu/library/algorithms/ashe/public_parameters.h"
 #include "heu/library/algorithms/ashe/secret_key.h"
-#include "heu/library/algorithms/ashe/encryptor.h"
 
 namespace heu::lib::algorithms::ashe {
 class KeyGenerator {
-public:
+ public:
   static void Generate(int key_size, SecretKey *sk, PublicParameters *pk);
   static void Generate(SecretKey *sk, PublicParameters *pk);
 
-private:
+ private:
   static void InitZeros(int64_t k_r1, int64_t k_p, int64_t k_q, int64_t k_r2,
-                        int64_t k_m, SecretKey sk_,
-                        std::vector<BigInt> *zeros);
+                        int64_t k_m, SecretKey sk_, std::vector<BigInt> *zeros);
 };
-} // namespace heu::lib::algorithms::ashe
+}  // namespace heu::lib::algorithms::ashe
