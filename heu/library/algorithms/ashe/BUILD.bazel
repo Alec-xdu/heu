@@ -66,9 +66,9 @@ yacl_cc_library(
     srcs = ["key_generator.cc"],
     hdrs = ["key_generator.h"],
     deps = [
+        ":encryptor",
         ":public_parameters",
         ":secret_key",
-        ":encryptor",
     ],
 )
 
