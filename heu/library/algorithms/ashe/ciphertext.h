@@ -23,19 +23,16 @@ namespace heu::lib::algorithms::ashe {
 using Plaintext = BigInt;
 
 class Ciphertext : public HeObject<Ciphertext> {
-public:
+ public:
   Ciphertext() = default;
 
-  explicit Ciphertext(BigInt n) : n_(std::move(n)) {
-  }
+  explicit Ciphertext(BigInt n) : n_(std::move(n)) {}
 
   [[nodiscard]] std::string ToString() const override {
     return fmt::format("CT: {}", n_);
   }
 
-  bool operator==(const Ciphertext &other) const {
-    return n_ == other.n_;
-  }
+  bool operator==(const Ciphertext &other) const { return n_ == other.n_; }
 
   bool operator!=(const Ciphertext &other) const {
     return !this->operator==(other);
@@ -45,4 +42,4 @@ public:
 
   BigInt n_;
 };
-} // namespace heu::lib::algorithms::ashe
+}  // namespace heu::lib::algorithms::ashe
