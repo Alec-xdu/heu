@@ -41,6 +41,7 @@ yacl_cc_library(
         "//heu/library/algorithms/paillier_ic",
         "//heu/library/algorithms/paillier_ipcl",
         "//heu/library/algorithms/paillier_zahlen",
+        "//heu/library/algorithms/ashe"
     ],
 )
 
