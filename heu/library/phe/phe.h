@@ -94,6 +94,8 @@ class DestinationHeKit : public HeKitPublicBase {
     return encryptor_;
   }
 
+  [[nodiscard]] bool canEncrypt() const { return encryptor_ != nullptr; }
+
   [[nodiscard]] const std::shared_ptr<Evaluator> &GetEvaluator() const {
     return evaluator_;
   }

@@ -23,10 +23,12 @@
 namespace heu::lib::algorithms::ashe {
 class Decryptor {
  public:
-  explicit Decryptor(PublicParameters pp, SecretKey sk)
+  explicit Decryptor(PublicKey pp, SecretKey sk)
       : pp_(std::move(pp)), sk_(std::move(sk)) {
     p = sk_.p_;
     q = sk_.q_;
+    MOD_ = BigInt(1) << 192;
+    half = BigInt(1) << 191;
   }
 
   void Decrypt(const Ciphertext &ct, Plaintext *out) const;
@@ -34,12 +36,11 @@ class Decryptor {
   [[nodiscard]] Plaintext Decrypt(const Ciphertext &ct) const;
 
  private:
-  PublicParameters pp_;
+  PublicKey pp_;
   SecretKey sk_;
-  BigInt half = BigInt(UINT64_MAX) / BigInt(2);
-  BigInt MAX = BigInt(UINT64_MAX);
+  BigInt half;
+  BigInt MOD_;
   BigInt p;
   BigInt q;
-  BigInt ZERO = BigInt(0);
 };
 }  // namespace heu::lib::algorithms::ashe

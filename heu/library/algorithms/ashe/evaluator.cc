@@ -14,8 +14,6 @@
 
 #include "heu/library/algorithms/ashe/evaluator.h"
 
-#include "fmt/ranges.h"
-
 namespace heu::lib::algorithms::ashe {
 void Evaluator::Randomize(Ciphertext *ct) const {
   BigInt r;
@@ -28,7 +26,7 @@ Ciphertext Evaluator::Add(const Ciphertext &a, const Ciphertext &b) const {
 }
 
 Ciphertext Evaluator::Add(const Ciphertext &a, const Plaintext &b) const {
-  return Ciphertext(a.n_ + b % MAX);
+  return Ciphertext(a.n_ + b % MOD_);
 }
 
 Ciphertext Evaluator::Add(const Plaintext &a, const Ciphertext &b) const {
@@ -40,11 +38,15 @@ Plaintext Evaluator::Add(const Plaintext &a, const Plaintext &b) const {
 }
 
 void Evaluator::AddInplace(Ciphertext *a, const Ciphertext &b) const {
-  *a = Add(*a, b);
+  a->n_ += b.n_;
 }
 
 void Evaluator::AddInplace(Ciphertext *a, const Plaintext &b) const {
-  *a = Add(*a, b);
+  if (b.IsNegative()) {
+    a->n_ += b + MOD_;
+  } else {
+    a->n_ += b;
+  }
 }
 
 void Evaluator::AddInplace(Plaintext *a, const Plaintext &b) const {
@@ -52,8 +54,7 @@ void Evaluator::AddInplace(Plaintext *a, const Plaintext &b) const {
 }
 
 Ciphertext Evaluator::Sub(const Ciphertext &a, const Ciphertext &b) const {
-  const Ciphertext b_ = Negate(b);
-  return Add(a, b_);
+  return Ciphertext(a.n_ - b.n_);
 }
 
 Ciphertext Evaluator::Sub(const Ciphertext &a, const Plaintext &b) const {
@@ -81,11 +82,12 @@ void Evaluator::SubInplace(Plaintext *a, const Plaintext &b) const {
 }
 
 Ciphertext Evaluator::Mul(const Ciphertext &a, const Plaintext &b) const {
-  YACL_ENFORCE(b % MAX <= BigInt(2).Pow(16),
-               "Plaintext {} is too large, cannot encrypt.", b);
-  Ciphertext res;
-  res.n_ = b.AddMod(ZERO, MAX) * a.n_;
-  return res;
+  if (!b.IsNegative()) {
+    return Ciphertext(b * a.n_);
+  } else {
+    Ciphertext neg_a = Negate(a);
+    return Ciphertext((-b) * neg_a.n_);
+  }
 }
 
 Ciphertext Evaluator::Mul(const Plaintext &a, const Ciphertext &b) const {
@@ -105,8 +107,7 @@ void Evaluator::MulInplace(Plaintext *a, const Plaintext &b) const {
 }
 
 Ciphertext Evaluator::Negate(const Ciphertext &a) const {
-  const BigInt neg = BigInt(-1) % MAX;
-  return Mul(a, neg);
+  return Ciphertext(MOD_ - a.n_);
 }
 
 void Evaluator::NegateInplace(Ciphertext *a) const { *a = Negate(*a); }

@@ -17,21 +17,36 @@
 #include <utility>
 
 namespace heu::lib::algorithms::ashe {
-void KeyGenerator::Generate(int key_size, SecretKey *sk, PublicParameters *pk) {
+void KeyGenerator::Generate(int key_size, SecretKey *sk, PublicKey *pk) {
   int64_t k_r1, k_p, k_q, k_r2, k_m;
-  ;
   if (key_size == 2048) {
-    k_r1 = 4384;
-    k_p = 1536;
-    k_q = 1008;
-    k_r2 = 512;
-    k_m = 64;
+    // < 10w
+    k_r1 = 3978;
+    k_p = 777;
+    k_q = 256;
+    k_r2 = 504;
+    k_m = 128;
+  } else if (key_size == 219) {
+    // < 50w
+    k_r1 = 5160;
+    k_p = 779;
+    k_q = 256;
+    k_r2 = 504;
+    k_m = 128;
+  } else if (key_size == 220) {
+    // < 100w
+    k_r1 = 5800;
+    k_p = 780;
+    k_q = 256;
+    k_r2 = 504;
+    k_m = 128;
   } else {
-    k_r1 = 8832;
-    k_p = 1536;
-    k_q = 992;
-    k_r2 = 512;
-    k_m = 64;
+    // <300w
+    k_r1 = 7180;
+    k_p = 782;
+    k_q = 256;
+    k_r2 = 504;
+    k_m = 128;
   }
   std::vector<BigInt> zeros;
   BigInt p = BigInt::RandPrimeOver(k_p);
@@ -39,19 +54,19 @@ void KeyGenerator::Generate(int key_size, SecretKey *sk, PublicParameters *pk) {
   *sk = SecretKey(p, q);
 
   InitZeros(k_r1, k_p, k_q, k_r2, k_m, *sk, &zeros);
-  *pk = PublicParameters(k_r1, k_p, k_q, k_r2, k_m, zeros);
+  *pk = PublicKey(k_r1, k_p, k_q, k_r2, k_m, zeros);
 }
 
-void KeyGenerator::Generate(SecretKey *sk, PublicParameters *pk) {
+void KeyGenerator::Generate(SecretKey *sk, PublicKey *pk) {
   Generate(2048, sk, pk);
 }
 
 void KeyGenerator::InitZeros(int64_t k_r1, int64_t k_p, int64_t k_q,
                              int64_t k_r2, int64_t k_m, SecretKey sk_,
                              std::vector<BigInt> *zeros) {
-  auto tmp = PublicParameters(k_r1, k_p, k_q, k_r2, k_m);
+  auto tmp = PublicKey(k_r1, k_p, k_q, k_r2, k_m);
   auto et = Encryptor(tmp, std::move(sk_));
-  for (int i = 1; i <= 20; ++i) {
+  for (int i = 1; i <= 100; ++i) {
     zeros->emplace_back(et.Encrypt(BigInt(0)).n_);
   }
 }

@@ -42,7 +42,7 @@ Ciphertext Encryptor::EncryptImpl(const Plaintext &m,
   BigInt r, r1;
   BigInt::RandomExactBits(pp_.k_r1, &r);
   BigInt::RandomExactBits(pp_.k_r2, &r1);
-  const BigInt m1 = r * sk_.p_ + r1 * sk_.q_ + m.AddMod(ZERO, MAX);
+  const BigInt m1 = r * sk_.p_ + r1 * sk_.q_ + m % MOD_;
 
   if constexpr (audit) {
     YACL_ENFORCE(audit_str != nullptr);

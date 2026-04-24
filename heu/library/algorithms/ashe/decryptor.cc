@@ -20,7 +20,9 @@ void Decryptor::Decrypt(const Ciphertext &ct, Plaintext *out) const {
 }
 
 Plaintext Decryptor::Decrypt(const Ciphertext &ct) const {
-  BigInt tmp = ct.n_.AddMod(ZERO, p).AddMod(ZERO, q).AddMod(ZERO, MAX);
-  return tmp <= half ? tmp : tmp - MAX;
+  BigInt m = ct.n_ % p % q;
+  m = m % MOD_;
+  if (m >= half) m = m - MOD_;
+  return m;
 }
 }  // namespace heu::lib::algorithms::ashe

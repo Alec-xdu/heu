@@ -16,6 +16,7 @@
 
 #include "msgpack.hpp"
 
+#include "heu/library/algorithms/ashe/ashe.h"
 #include "heu/library/algorithms/dgk/dgk.h"
 #include "heu/library/algorithms/dj/dj.h"
 #include "heu/library/algorithms/elgamal/elgamal.h"
@@ -54,6 +55,7 @@ enum class SchemaType : uint8_t {
   ENUM_ELEMENT(8, true, ElGamal)
   ENUM_ELEMENT(10, true, DGK)
   ENUM_ELEMENT(11, true, DJ)
+  ENUM_ELEMENT(12, true, AShe)
   // YOUR_ALGO
 };
 // clang-format on
@@ -84,7 +86,8 @@ enum class SchemaType : uint8_t {
   INVOKE(ENABLE_CLUSTAR_FPGA, func_or_macro, ::heu::lib::algorithms::paillier_clustar_fpga, ##__VA_ARGS__) \
   INVOKE(true, func_or_macro, ::heu::lib::algorithms::elgamal, ##__VA_ARGS__) \
   INVOKE(true, func_or_macro, ::heu::lib::algorithms::dgk, ##__VA_ARGS__) \
-  INVOKE(true, func_or_macro, ::heu::lib::algorithms::dj, ##__VA_ARGS__)
+  INVOKE(true, func_or_macro, ::heu::lib::algorithms::dj, ##__VA_ARGS__) \
+  INVOKE(true, func_or_macro, ::heu::lib::algorithms::ashe, ##__VA_ARGS__)
 
 // [SPI: Please register your algorithm here] || progress: (4 of 5)
 // If you add a new schema, change this !!

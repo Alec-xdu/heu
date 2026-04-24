@@ -22,18 +22,18 @@ namespace heu::lib::algorithms::ashe::test {
 
 class asheTest : public testing::Test {
  protected:
-  static void SetUpTestSuite() { KeyGenerator::Generate(4096, &sk_, &pp_); }
+  static void SetUpTestSuite() { KeyGenerator::Generate(2048, &sk_, &pp_); }
 
   static SecretKey sk_;
-  static PublicParameters pp_;
+  static PublicKey pp_;
 };
 
 SecretKey asheTest::sk_;
-PublicParameters asheTest::pp_;
+PublicKey asheTest::pp_;
 
 TEST_F(asheTest, SerializeTest) {
   auto pp_buffer = pp_.Serialize();
-  PublicParameters pp2;
+  PublicKey pp2;
   pp2.Deserialize(pp_buffer);
   ASSERT_EQ(pp_.k_r1, pp2.k_r1);
   ASSERT_EQ(pp_.k_r2, pp2.k_r2);
@@ -139,7 +139,16 @@ TEST_F(asheTest, NegateEvalutate) {
   Encryptor encryptor_(pp_, sk_);
   Evaluator evaluator_(pp_);
   Decryptor decryptor_(pp_, sk_);
-  Plaintext p = Plaintext(123456);
+  Plaintext p1 = Plaintext(123456);
+  Plaintext p2 = Plaintext(23456);
+  Ciphertext c1 = encryptor_.Encrypt(p1);
+  Ciphertext c2 = encryptor_.Encrypt(p2);
+  Ciphertext c3 = evaluator_.Sub(c1, c2);
+  decryptor_.Decrypt(c3, &p1);
+  EXPECT_EQ(BigInt(123456 - 23456), p1);
+  evaluator_.NegateInplace(&c2);
+  decryptor_.Decrypt(c2, &p2);
+  EXPECT_EQ(BigInt(-23456), p2);
 }
 
 TEST_F(asheTest, RuntimeEfficientTest) {
@@ -148,21 +157,22 @@ TEST_F(asheTest, RuntimeEfficientTest) {
   Decryptor decryptor_(pp_, sk_);
   Ciphertext c1, c2;
   std::chrono::time_point<std::chrono::high_resolution_clock> t1, t2;
+  c1 = encryptor_.Encrypt(pp_.MessageSpace().second);
+  c2 = encryptor_.Encrypt(pp_.MessageSpace().second);
   t1 = std::chrono::high_resolution_clock::now();
-  for (int i = 0; i < 10000; i++) {
-    c1 = encryptor_.Encrypt(BigInt(123456));
+  for (int i = 0; i < 100000; i++) {
+    evaluator_.AddInplace(&c1, c2);
+    // Plaintext m = decryptor_.Decrypt(c2);
+    // std::cout << m << std::endl;
+    // EXPECT_EQ(m, BigInt(-1)*BigInt(i + 2));
   }
   t2 = std::chrono::high_resolution_clock::now();
   auto duration =
       std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1);
-  std::cout << "encrypt 1w times used " << duration.count() << std::endl;
-  t1 = std::chrono::high_resolution_clock::now();
-  for (int i = 0; i < 10000; i++) {
-    c2 = evaluator_.Add(c1, c1);
-  }
-  t2 = std::chrono::high_resolution_clock::now();
-  duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1);
   std::cout << "add 1w times used " << duration.count() << std::endl;
+  auto p = decryptor_.Decrypt(c1);
+  std::cout << p << std::endl;
+  EXPECT_EQ(p, pp_.MessageSpace().second * 100001);
   t1 = std::chrono::high_resolution_clock::now();
   for (int i = 0; i < 10000; i++) {
     Plaintext m = decryptor_.Decrypt(c2);

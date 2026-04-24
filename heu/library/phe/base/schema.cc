@@ -25,8 +25,7 @@ namespace heu::lib::phe {
     SchemaType::enum_item, { #enum_item, ##__VA_ARGS__ } \
   }
 #define MAP_ITEM_false(...) \
-  {                         \
-  }
+  {}
 #define MAP_ITEM_HELPER(enable, enum_item, ...) \
   MAP_ITEM_##enable(enum_item, ##__VA_ARGS__)
 #define MAP_ITEM(enable, enum_item, ...) \
@@ -60,6 +59,7 @@ static const std::map<SchemaType, std::vector<std::string>,
         MAP_ITEM(true, DGK, "dgk", "damgard-geisler-kroigaard",
                  "damgard_geisler_kroigaard"),
         MAP_ITEM(true, DJ, "dj", "damgard-jurik", "damgard_jurik"),
+        MAP_ITEM(true, AShe, "ashe", "aShe", "aSHE", "ASHE"),
         // MAP_ITEM(ENABLE, YOUR_ALGO, "one_or_more_name_alias"),
 };
 

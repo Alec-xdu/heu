@@ -57,8 +57,10 @@ class DestinationHeKit : public phe::HeKitPublicBase {
  public:
   explicit DestinationHeKit(phe::DestinationHeKit phe_kit) {
     Setup(phe_kit.GetPublicKey());
-
-    encryptor_ = std::make_shared<Encryptor>(*phe_kit.GetEncryptor());
+    auto phe_encryptor = phe_kit.GetEncryptor();
+    if (phe_encryptor != nullptr) {
+      encryptor_ = std::make_shared<Encryptor>(*phe_encryptor);
+    }
     evaluator_ = std::make_shared<Evaluator>(*phe_kit.GetEvaluator());
   }
 

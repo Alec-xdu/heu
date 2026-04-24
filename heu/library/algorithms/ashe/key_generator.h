@@ -21,8 +21,8 @@
 namespace heu::lib::algorithms::ashe {
 class KeyGenerator {
  public:
-  static void Generate(int key_size, SecretKey *sk, PublicParameters *pk);
-  static void Generate(SecretKey *sk, PublicParameters *pk);
+  static void Generate(int key_size, SecretKey *sk, PublicKey *pk);
+  static void Generate(SecretKey *sk, PublicKey *pk);
 
  private:
   static void InitZeros(int64_t k_r1, int64_t k_p, int64_t k_q, int64_t k_r2,

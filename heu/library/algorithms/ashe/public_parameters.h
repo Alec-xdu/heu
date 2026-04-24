@@ -20,7 +20,7 @@
 #include "heu/library/algorithms/util/he_object.h"
 
 namespace heu::lib::algorithms::ashe {
-class PublicParameters : public HeObject<PublicParameters> {
+class PublicKey : public HeObject<PublicKey> {
  private:
   BigInt plaintextBound;
 
@@ -38,28 +38,27 @@ class PublicParameters : public HeObject<PublicParameters> {
   }
 
  public:
-  int64_t k_r1 = 4384;
-  int64_t k_p = 1536;
-  int64_t k_q = 1008;
-  int64_t k_r2 = 512;
-  int64_t k_m = 64;
+  int64_t k_r1 = 2196;
+  int64_t k_p = 768;
+  int64_t k_q = 256;
+  int64_t k_r2 = 504;
+  int64_t k_m = 128;
   std::vector<BigInt> randomZeros;
   BigInt M[2];
 
-  PublicParameters() = default;
+  PublicKey() = default;
 
-  PublicParameters(int64_t k_r1, int64_t k_p, int64_t k_q, int64_t k_r2,
-                   int64_t k_m);
+  PublicKey(int64_t k_r1, int64_t k_p, int64_t k_q, int64_t k_r2, int64_t k_m);
 
-  PublicParameters(int64_t k_r1, int64_t k_p, int64_t k_q, int64_t k_r2,
-                   int64_t k_m, const std::vector<BigInt> &zeros);
+  PublicKey(int64_t k_r1, int64_t k_p, int64_t k_q, int64_t k_r2, int64_t k_m,
+            const std::vector<BigInt> &zeros);
 
-  bool operator==(const PublicParameters &other) const {
+  bool operator==(const PublicKey &other) const {
     return k_r1 == other.k_r1 && k_p == other.k_p && k_q == other.k_q &&
            k_r2 == other.k_r2 && k_m == other.k_m;
   }
 
-  bool operator!=(const PublicParameters &other) const {
+  bool operator!=(const PublicKey &other) const {
     return !this->operator==(other);
   }
 

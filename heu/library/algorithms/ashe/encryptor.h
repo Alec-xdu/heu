@@ -23,8 +23,10 @@
 namespace heu::lib::algorithms::ashe {
 class Encryptor {
  public:
-  explicit Encryptor(PublicParameters pk, SecretKey sk)
-      : pp_(std::move(pk)), sk_(std::move(sk)) {}
+  explicit Encryptor(PublicKey pk, SecretKey sk)
+      : pp_(std::move(pk)), sk_(std::move(sk)) {
+    MOD_ = BigInt(1) << 192;
+  }
 
   [[nodiscard]] Ciphertext EncryptZero() const;
   [[nodiscard]] Ciphertext Encrypt(const Plaintext &m) const;
@@ -37,9 +39,8 @@ class Encryptor {
  private:
   template <bool audit = false>
   Ciphertext EncryptImpl(const Plaintext &m, std::string *audit_str) const;
-  PublicParameters pp_;
+  PublicKey pp_;
   SecretKey sk_;
-  BigInt ZERO = BigInt(0);
-  BigInt MAX = BigInt(UINT64_MAX);
+  BigInt MOD_;
 };
 }  // namespace heu::lib::algorithms::ashe

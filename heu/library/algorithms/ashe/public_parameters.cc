@@ -15,7 +15,7 @@
 #include "heu/library/algorithms/ashe/public_parameters.h"
 
 namespace heu::lib::algorithms::ashe {
-PublicParameters::PublicParameters(int64_t k_r1, int64_t k_p, int64_t k_q,
+PublicKey::PublicKey(int64_t k_r1, int64_t k_p, int64_t k_q,
                                    int64_t k_r2, int64_t k_m) {
   this->k_r1 = k_r1;
   this->k_p = k_p;
@@ -25,14 +25,14 @@ PublicParameters::PublicParameters(int64_t k_r1, int64_t k_p, int64_t k_q,
   Init();
 }
 
-PublicParameters::PublicParameters(int64_t k_r1, int64_t k_p, int64_t k_q,
+PublicKey::PublicKey(int64_t k_r1, int64_t k_p, int64_t k_q,
                                    int64_t k_r2, int64_t k_m,
                                    const std::vector<BigInt> &zeros)
-    : PublicParameters(k_r1, k_p, k_q, k_r2, k_m) {
+    : PublicKey(k_r1, k_p, k_q, k_r2, k_m) {
   this->randomZeros = zeros;
 }
 
-std::string PublicParameters::ToString() const {
+std::string PublicKey::ToString() const {
   return fmt::format(
       "ashe PP: k_r1={}, k_p={}, k_q={}, "
       "k_r2={}, k_m={}, randomZeros={}[size:{}]",
@@ -41,8 +41,8 @@ std::string PublicParameters::ToString() const {
       randomZeros.size());
 }
 
-void PublicParameters::Init() {
+void PublicKey::Init() {
   this->M[1] = BigInt(2).Pow(k_m - 1) - BigInt(1);
-  this->M[0] = -this->M[1];
+  this->M[0] = -BigInt(2).Pow(k_m - 1);
 }
 }  // namespace heu::lib::algorithms::ashe
