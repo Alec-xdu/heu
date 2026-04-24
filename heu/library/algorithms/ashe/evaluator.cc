@@ -107,7 +107,10 @@ void Evaluator::MulInplace(Plaintext *a, const Plaintext &b) const {
 }
 
 Ciphertext Evaluator::Negate(const Ciphertext &a) const {
-  return Ciphertext(MOD_ - a.n_);
+  BigInt r;
+  BigInt::RandomLtN(BigInt(pp_.randomZeros.size()), &r);
+  BigInt random0 = pp_.randomZeros[r.Get<int64_t>()];
+  return Ciphertext(MOD_ - a.n_ + random0);
 }
 
 void Evaluator::NegateInplace(Ciphertext *a) const { *a = Negate(*a); }

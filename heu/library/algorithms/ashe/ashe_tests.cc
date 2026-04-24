@@ -19,8 +19,9 @@
 #include "heu/library/algorithms/ashe/ashe.h"
 
 namespace heu::lib::algorithms::ashe::test {
+
 class asheTest : public testing::Test {
-protected:
+ protected:
   static void SetUpTestSuite() { KeyGenerator::Generate(2048, &sk_, &pp_); }
 
   static SecretKey sk_;
@@ -142,6 +143,12 @@ TEST_F(asheTest, NegateEvalutate) {
   Plaintext p2 = Plaintext(23456);
   Ciphertext c1 = encryptor_.Encrypt(p1);
   Ciphertext c2 = encryptor_.Encrypt(p2);
+  Ciphertext c3 = evaluator_.Sub(c1, c2);
+  c2 = evaluator_.Negate(c2);
+  decryptor_.Decrypt(c2, &p1);
+  EXPECT_EQ(p1, -23456);
+  decryptor_.Decrypt(c3, &p1);
+  EXPECT_EQ(BigInt(123456 - 23456), p1);
 }
 
 TEST_F(asheTest, RuntimeEfficientTest) {
@@ -174,4 +181,4 @@ TEST_F(asheTest, RuntimeEfficientTest) {
   duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1);
   std::cout << "decrypt 1w times used " << duration.count() << std::endl;
 }
-} // namespace heu::lib::algorithms::ashe::test
+}  // namespace heu::lib::algorithms::ashe::test

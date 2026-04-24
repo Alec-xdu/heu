@@ -64,7 +64,7 @@ void KeyGenerator::Generate(SecretKey *sk, PublicKey *pk) {
 void KeyGenerator::InitZeros(int64_t k_r1, int64_t k_p, int64_t k_q,
                              int64_t k_r2, int64_t k_m, SecretKey sk_,
                              std::vector<BigInt> *zeros) {
-  auto tmp = PublicKey(k_r1, k_p, k_q, k_r2, k_m);
+  auto tmp = PublicKey(k_r1 + 8, k_p, k_q, k_r2 + 8, k_m);
   auto et = Encryptor(tmp, std::move(sk_));
   for (int i = 1; i <= 100; ++i) {
     zeros->emplace_back(et.Encrypt(BigInt(0)).n_);
