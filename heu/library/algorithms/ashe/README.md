@@ -5,8 +5,9 @@ KeyGen(key_size):
 - Sample a $k_p$-bit (usually $k_p=1536$) prime $p$
 - Sample a $k_q$-bit (usually $k_q=512$) primes $q$
 - Set $k_{r1}, k_{r2}$, the length of random numbers
-- Set the message space parameter $k_m=64$ 
-- The private key is $(p, q)$ and the public parameter is all the parameters $(k_p, k_q, k_{r1}, k_{r2}, k_m)$ and pre-computed ciphertext of $0$
+- Set the message space parameter $k_m=64$
+- The private key is $(p, q)$ and the public parameter is all the parameters $(k_p, k_q, k_{r1}, k_{r2}, k_m)$ and
+  pre-computed ciphertext of $0$
 
 Encryption(sk, pp, m):
 
@@ -28,4 +29,5 @@ Multiplicative homomorphism:
 
 - MulPlain $(c, m) = c \cdot m$
 
-This implement focus on 2048bits key size and 112bit security. The argument keysize in key_generator is actually the scale of dataset.    
+This implement focus on 2048bits key size and 112bit security. The argument keysize in key_generator is actually the
+scale of dataset.
